@@ -1,5 +1,5 @@
 // A backend API URL-je (jelenleg a Codespaces URL)
-const API_URL = "https://sturdy-dollop-7vwp7xxqvwwx2xrp4-5202.app.github.dev/stations";
+const API_URL = "https://zemanyag-rak.onrender.com/stations";
 
 const searchBtn = document.getElementById("searchBtn");
 const statusEl = document.getElementById("status");
