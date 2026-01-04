@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "zjb0lRERJ0Q=",
+  "success": true,
+  "projectFilePath": "/workspaces/-zemanyag-rak/backend/FuelApi/FuelApi.csproj",
+  "expectedPackageFiles": [
+    "/home/codespace/.nuget/packages/htmlagilitypack/1.12.4/htmlagilitypack.1.12.4.nupkg.sha512"
+  ],
+  "logs": []
+}
