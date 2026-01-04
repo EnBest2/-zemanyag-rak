@@ -1,5 +1,5 @@
 // A backend API URL-je (jelenleg a Codespaces URL)
-const API_URL = "https://zemanyag-rak.onrender.com/stations";
+const API_URL = "https://zemanyag-rak.onrender.com/stations?utm_source=copilot.com";
 
 const searchBtn = document.getElementById("searchBtn");
 const statusEl = document.getElementById("status");
