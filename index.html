@@ -2,18 +2,37 @@
 <html lang="hu">
 <head>
   <meta charset="UTF-8" />
-  <title>Hol tankoljak? – Üzemanyagárak</title>
+  <title>Hol tankoljak?</title>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- iOS specifikus PWA beállítások -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hol tankoljak?">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Reszponzív -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       margin: 0;
-      padding: 1rem;
+      padding: 1.5rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #0f172a;
       color: #e5e7eb;
     }
     h1 {
-      font-size: 1.5rem;
-      margin-bottom: 0.5rem;
+      margin-top: 0;
+      margin-bottom: 0.25rem;
+      font-size: 1.4rem;
+    }
+    .muted {
+      color: #9ca3af;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
     }
     .card {
       background: #020617;
@@ -21,251 +40,128 @@
       padding: 1rem;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
       margin-bottom: 1rem;
-    }
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-    label {
-      font-size: 0.9rem;
-      color: #9ca3af;
-    }
-    input, select, button {
-      padding: 0.4rem 0.6rem;
-      border-radius: 0.375rem;
-      border: 1px solid #374151;
-      background: #020617;
-      color: #e5e7eb;
-      font-size: 0.9rem;
+      border: 1px solid #1f2937;
     }
     button {
-      cursor: pointer;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
       background: #22c55e;
-      border-color: #16a34a;
       color: #022c22;
       font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
     }
     button:disabled {
-      opacity: 0.5;
+      opacity: 0.6;
       cursor: default;
-    }
-    pre {
-      background: #020617;
-      padding: 1rem;
-      border-radius: 0.75rem;
-      overflow: auto;
-      font-size: 0.8rem;
-      max-height: 300px;
     }
     .station-list {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
-      margin-top: 1rem;
+      margin-top: 0.75rem;
     }
     .station {
-      border-radius: 0.75rem;
       padding: 0.75rem;
+      border-radius: 0.75rem;
       background: #020617;
       border: 1px solid #1f2937;
     }
-    .station-title {
-      font-weight: 600;
+    .station-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
       margin-bottom: 0.25rem;
     }
+    .station-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
     .badge {
-      display: inline-block;
       padding: 0.1rem 0.4rem;
       border-radius: 999px;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       background: #1d4ed8;
       color: #e5e7eb;
-      margin-left: 0.3rem;
-    }
-    .muted {
-      color: #9ca3af;
-      font-size: 0.8rem;
     }
     .price {
-      font-weight: 600;
+      font-weight: 700;
       color: #22c55e;
+      font-size: 1rem;
+    }
+    .distance {
+      font-size: 0.85rem;
+      color: #9ca3af;
     }
     .error {
       color: #f97316;
       font-size: 0.9rem;
       margin-top: 0.5rem;
     }
+    select, input {
+      padding: 0.4rem 0.6rem;
+      border-radius: 0.375rem;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.85rem;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      align-items: flex-end;
+    }
+    label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
   </style>
 </head>
 <body>
-  <h1>Hol tankoljak? – Üzemanyagárak (MVP)</h1>
-  <p class="muted">
-    Ez egy első, nagyon egyszerű verzió. Először csak lekérjük az adatokat, aztán együtt finomítjuk.
-  </p>
+  <h1>Hol tankoljak?</h1>
+  <div class="muted">
+    Keresd meg a legközelebbi legolcsóbb kutat a jelenlegi pozíciód alapján.
+  </div>
 
   <div class="card">
     <div class="controls">
       <div>
-        <label for="fuelType">Üzemanyag típus</label><br />
+        <label for="fuelType">Üzemanyag típusa</label><br />
         <select id="fuelType">
-          <option value="">Összes</option>
-          <option value="unleaded_95">ESZ-95</option>
+          <option value="95">ESZ-95</option>
           <option value="diesel">Dízel</option>
-          <option value="unleaded_98">ESZ-98</option>
+          <option value="98">ESZ-98</option>
           <option value="lpg">LPG</option>
         </select>
       </div>
       <div>
-        <label for="maxDistance">Max. távolság (km) – egyelőre még nem működik</label><br />
-        <input id="maxDistance" type="number" min="1" max="200" value="30" />
+        <label for="maxDistance">Max. távolság (km)</label><br />
+        <input id="maxDistance" type="number" min="5" max="200" value="30" />
       </div>
       <div>
-        <label>&nbsp;</label><br />
-        <button id="loadBtn">Árak betöltése</button>
+        <button id="searchBtn">Legolcsóbb kút keresése</button>
       </div>
     </div>
 
-    <div id="status" class="muted">Nyomd meg az „Árak betöltése” gombot.</div>
+    <div id="status" class="muted">Nyomd meg a gombot a kereséshez. A böngésző engedélyt fog kérni a helyedhez.</div>
     <div id="error" class="error"></div>
 
     <div id="stations" class="station-list"></div>
   </div>
 
-  <div class="card">
-    <h2>Nyers API válasz (debug)</h2>
-    <p class="muted">
-      Ez csak fejlesztői nézet. Nézd meg a struktúrát, és küldj mintát, hogy pontos UI-t írjak.
-    </p>
-    <pre id="raw"></pre>
-  </div>
-
+  <script src="app.js"></script>
   <script>
-    const API_BASE = "https://fuel-prices-hungary-api.vercel.app";
-
-    const loadBtn = document.getElementById("loadBtn");
-    const fuelTypeSelect = document.getElementById("fuelType");
-    const statusEl = document.getElementById("status");
-    const errorEl = document.getElementById("error");
-    const rawEl = document.getElementById("raw");
-    const stationsEl = document.getElementById("stations");
-
-    async function loadPrices() {
-      errorEl.textContent = "";
-      stationsEl.innerHTML = "";
-      rawEl.textContent = "";
-      loadBtn.disabled = true;
-      statusEl.textContent = "Adatok betöltése...";
-
-      const fuelType = fuelTypeSelect.value;
-
-      // API endpoint választása
-      // Üzemanyag típus szerint: /type/unleaded_95, /type/diesel, stb. 
-      let url = API_BASE;
-      if (fuelType) {
-        url = API_BASE + "/type/" + encodeURIComponent(fuelType);
-      }
-
-      try {
-        const res = await fetch(url);
-        if (!res.ok) {
-          throw new Error("HTTP hiba: " + res.status);
-        }
-        const data = await res.json();
-
-        // Nyers JSON megjelenítése
-        rawEl.textContent = JSON.stringify(data, null, 2);
-
-        statusEl.textContent = "Adatok betöltve. Az alábbi lista még csak egy próba megjelenítés.";
-        renderStations(data);
-      } catch (err) {
-        console.error(err);
-        errorEl.textContent = "Nem sikerült betölteni az adatokat: " + err.message;
-        statusEl.textContent = "Hiba történt.";
-      } finally {
-        loadBtn.disabled = false;
-      }
-    }
-
-    // Ezt most még nagyon generikusan írjuk, mert nem ismerjük pontosan az API struktúráját.
-    function renderStations(data) {
-      stationsEl.innerHTML = "";
-
-      // Ha tömb, próbáljuk meg végigiterálni
-      if (Array.isArray(data)) {
-        data.slice(0, 50).forEach((item, index) => {
-          const div = document.createElement("div");
-          div.className = "station";
-
-          const title = document.createElement("div");
-          title.className = "station-title";
-          title.textContent =
-            item.name ||
-            item.station_name ||
-            item.brand ||
-            "Ismeretlen kút #" + (index + 1);
-
-          const details = document.createElement("div");
-          details.className = "muted";
-
-          // Néhány tipikus mezőt megpróbálunk kiolvasni (találgatás)
-          const addressParts = [
-            item.address,
-            item.city,
-            item.postcode,
-            item.settlement
-          ].filter(Boolean);
-
-          const addressText = addressParts.length
-            ? addressParts.join(", ")
-            : "Cím ismeretlen";
-
-          // Próbáljuk kiolvasni az árat (ez majd a valós struktúránál pontosítandó)
-          let priceText = "Ár ismeretlen";
-          let priceValue = null;
-
-          if (typeof item.price === "number") {
-            priceValue = item.price;
-          } else if (typeof item.price === "string") {
-            const num = Number(item.price.replace(",", "."));
-            if (!Number.isNaN(num)) priceValue = num;
-          } else if (item.prices && typeof item.prices === "object") {
-            // ha többféle üzemanyag ára van
-            const maybePrice =
-              item.prices.unleaded_95 ||
-              item.prices.diesel ||
-              item.prices.unleaded_98 ||
-              item.prices.lpg;
-            if (typeof maybePrice === "number") priceValue = maybePrice;
-          }
-
-          if (priceValue !== null) {
-            priceText = priceValue.toFixed(0) + " Ft/l";
-          }
-
-          details.innerHTML =
-            '<span class="price">' +
-            priceText +
-            "</span><br/>" +
-            addressText;
-
-          div.appendChild(title);
-          div.appendChild(details);
-
-          stationsEl.appendChild(div);
+    // Service worker regisztráció (PWA offline támogatás)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(err => {
+          console.log("SW regisztráció sikertelen:", err);
         });
-      } else {
-        // Ha nem tömb, akkor csak jelzünk
-        const div = document.createElement("div");
-        div.className = "station";
-        div.textContent =
-          "Az API válasza nem tömb (lista). Nézd meg a nyers JSON-t, és igazítjuk a kódot.";
-        stationsEl.appendChild(div);
-      }
+      });
     }
-
-    loadBtn.addEventListener("click", loadPrices);
   </script>
 </body>
 </html>
