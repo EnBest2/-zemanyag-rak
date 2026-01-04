@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("FuelApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7400a2ae73523a43b482e4c5206db0e4ad351030")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a3ebad4b994cb7e29e7b66e30eb593de77b49a16")]
 [assembly: System.Reflection.AssemblyProductAttribute("FuelApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("FuelApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
