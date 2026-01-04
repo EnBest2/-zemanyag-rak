@@ -1,4 +1,5 @@
-// app.js
+// A backend API URL-je (jelenleg a Codespaces URL)
+const API_URL = "https://sturdy-dollop-7vwp7xxqvwwx2xrp4-5202.app.github.dev/stations";
 
 const searchBtn = document.getElementById("searchBtn");
 const statusEl = document.getElementById("status");
@@ -6,50 +7,6 @@ const errorEl = document.getElementById("error");
 const stationsEl = document.getElementById("stations");
 const fuelTypeSelect = document.getElementById("fuelType");
 const maxDistanceInput = document.getElementById("maxDistance");
-
-// Dummy adat – ide jön majd a valódi API válasz
-// A struktúrát úgy tervezem, hogy könnyen cserélhető legyen.
-const DUMMY_STATIONS = [
-  {
-    name: "MOL Jánoshalma",
-    brand: "MOL",
-    lat: 46.2983,
-    lng: 19.3258,
-    address: "Jánoshalma, Példa utca 1.",
-    prices: {
-      "95": 558,
-      diesel: 572,
-      "98": 680,
-      lpg: 310
-    }
-  },
-  {
-    name: "Shell Kiskunhalas",
-    brand: "Shell",
-    lat: 46.4344,
-    lng: 19.4840,
-    address: "Kiskunhalas, Benzin tér 3.",
-    prices: {
-      "95": 552,
-      diesel: 569,
-      "98": 678,
-      lpg: 315
-    }
-  },
-  {
-    name: "Auchan Baja",
-    brand: "Auchan",
-    lat: 46.1757,
-    lng: 18.9636,
-    address: "Baja, Ipar u. 10.",
-    prices: {
-      "95": 545,
-      diesel: 563,
-      "98": 672,
-      lpg: 305
-    }
-  }
-];
 
 // Haversine-távolság számítás (km)
 function distanceKm(lat1, lon1, lat2, lon2) {
@@ -128,10 +85,8 @@ async function searchCheapest() {
       statusEl.textContent = "Kútlista betöltése…";
 
       try {
-        // Itt most dummy adatot használunk.
-        // TODO: ide jön majd az API hívás, pl:
-        // const stations = await fetchRealStations(latitude, longitude);
-        const stations = DUMMY_STATIONS;
+        // Valódi backend API hívása
+        const stations = await fetch(API_URL).then(r => r.json());
 
         // Távolság + ár kiválasztása
         const withDistanceAndPrice = stations
