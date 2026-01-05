@@ -10,4 +10,9 @@
     <PackageReference Include="HtmlAgilityPack" Version="1.12.4" />
   </ItemGroup>
 
+  <!-- 🔥 A wwwroot mappa mindig bekerül a publish outputba -->
+  <ItemGroup>
+    <Content Include="wwwroot\**" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
 </Project>
