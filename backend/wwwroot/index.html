@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hol tankoljak?</title>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.webmanifest">
+
+  <!-- iOS specifikus PWA beállítások -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Hol tankoljak?">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <!-- Reszponzív -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      padding: 1.5rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+    }
+    h1 {
+      margin-top: 0;
+      margin-bottom: 0.25rem;
+      font-size: 1.4rem;
+    }
+    .muted {
+      color: #9ca3af;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .card {
+      background: #020617;
+      border-radius: 0.75rem;
+      padding: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      margin-bottom: 1rem;
+      border: 1px solid #1f2937;
+    }
+    button {
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      background: #22c55e;
+      color: #022c22;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    .station-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .station {
+      padding: 0.75rem;
+      border-radius: 0.75rem;
+      background: #020617;
+      border: 1px solid #1f2937;
+    }
+    .station-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.25rem;
+    }
+    .station-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .badge {
+      padding: 0.1rem 0.4rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: #1d4ed8;
+      color: #e5e7eb;
+    }
+    .price {
+      font-weight: 700;
+      color: #22c55e;
+      font-size: 1rem;
+    }
+    .distance {
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+    .error {
+      color: #f97316;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    select, input {
+      padding: 0.4rem 0.6rem;
+      border-radius: 0.375rem;
+      border: 1px solid #374151;
+      background: #020617;
+      color: #e5e7eb;
+      font-size: 0.85rem;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      align-items: flex-end;
+    }
+    label {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hol tankoljak?</h1>
+  <div class="muted">
+    Keresd meg a legközelebbi legolcsóbb kutat a jelenlegi pozíciód alapján.
+  </div>
+
+  <div class="card">
+    <div class="controls">
+      <div>
+        <label for="fuelType">Üzemanyag típusa</label><br />
+        <select id="fuelType">
+          <option value="95">ESZ-95</option>
+          <option value="diesel">Dízel</option>
+          <option value="98">ESZ-98</option>
+          <option value="lpg">LPG</option>
+        </select>
+      </div>
+      <div>
+        <label for="maxDistance">Max. távolság (km)</label><br />
+        <input id="maxDistance" type="number" min="5" max="200" value="30" />
+      </div>
+      <div>
+        <button id="searchBtn">Legolcsóbb kút keresése</button>
+      </div>
+    </div>
+
+    <div id="status" class="muted">Nyomd meg a gombot a kereséshez. A böngésző engedélyt fog kérni a helyedhez.</div>
+    <div id="error" class="error"></div>
+
+    <div id="stations" class="station-list"></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Service worker regisztráció (PWA offline támogatás)
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(err => {
+          console.log("SW regisztráció sikertelen:", err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
