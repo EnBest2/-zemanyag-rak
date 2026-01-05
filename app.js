@@ -1,5 +1,5 @@
-// A backend API URL-je (jelenleg a Codespaces URL)
-const API_URL = "https://zemanyag-rak.onrender.com/stations?utm_source=copilot.com";
+// A backend API URL-je
+const API_URL = "https://zemanyag-rak.onrender.com/stations";
 
 const searchBtn = document.getElementById("searchBtn");
 const statusEl = document.getElementById("status");
@@ -88,10 +88,10 @@ async function searchCheapest() {
         // Valódi backend API hívása
         const stations = await fetch(API_URL).then(r => r.json());
 
-        // Távolság + ár kiválasztása
+        // Távolság + ár kiválasztása (JAVÍTVA: latitude/longitude)
         const withDistanceAndPrice = stations
           .map((s) => {
-            const distance = distanceKm(latitude, longitude, s.lat, s.lng);
+            const distance = distanceKm(latitude, longitude, s.latitude, s.longitude);
             const price = s.prices[fuelType];
             return { ...s, distance, price };
           })
